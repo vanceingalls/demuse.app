@@ -8,12 +8,15 @@ function MetamaskButton() {
   
 
   useEffect(() => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    if (window.ethereum._state.accounts) {
-      setConnected(true);
-    }
-    console.log(`balance@${address}: ${provider.getBalance(address, "latest")}`);
-    console.log(`balance of signer: ${balance}`);
+    (async () => {
+      const provider = new ethers.providers.AlchemyProvider("maticmum", "ZQj-nU8kvcKv1pY1ypI2bLNbZAy4mAT-");
+
+      if (window.ethereum._state.accounts) {
+        setConnected(true);
+      }
+      console.log(`balance@${address}: ${await provider.getBalance(address, "latest")}`);
+      console.log(`balance of signer: ${balance}`);
+    })();
   }, [address, balance]);
 
   useEffect(() => {
