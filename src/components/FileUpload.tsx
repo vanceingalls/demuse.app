@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 const FileUpload = () => {
   const [ipfs, setIpfs] = useState<any>(null)
 
-  const [fileHash, setFileHash] = useState(null)
+  const [uri, setUri] = useState('');
   const [error, setError] = useState(null)
 
   useEffect(() => {
@@ -38,15 +38,13 @@ const FileUpload = () => {
     try {
       const added = await ipfs.add(fileDetails, options)
 
-      setFileHash(added.cid.toString())
+      setUri('https://ipfs.io/ipfs/' + added.cid.toString());
     } catch (err: any) {
       setError(err.message)
     }
   }
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault()
-  }
+  
 
   if (!ipfs) {
     return <>Loading...</>
@@ -54,7 +52,7 @@ const FileUpload = () => {
 
   return (
     <>
-      <form id='capture-media' onSubmit={handleSubmit}>
+      <div>
         <input
           className="input-reset bn black-80 bg-white pa3 w-100 mb3 ft"
           id="input-file"
@@ -63,13 +61,13 @@ const FileUpload = () => {
           onChange={captureFile}
         />
         <label htmlFor="input-file" className="f5 ma0 pb2 aqua fw4 db">Input File</label>
-      </form>
+      </div>
 
-      {fileHash &&
+      {uri &&
         <div>
           <a id="gateway-link" target='_blank'
-            href={'https://ipfs.io/ipfs/' + fileHash}>
-            {fileHash}
+            href={uri} rel="noreferrer">
+            {uri}
           </a>
         </div>
       }
